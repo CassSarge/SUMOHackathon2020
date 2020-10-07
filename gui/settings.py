@@ -1,0 +1,8 @@
+#settings file
+
+HEIGHT=600
+WIDTH= 700
+
+BG_COLOUR="#a2e0d8"
+BG_COLOUR_2="#ffffff"
+BUTTON_COLOUR="#C0C0C0"
