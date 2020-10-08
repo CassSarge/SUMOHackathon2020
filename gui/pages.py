@@ -8,7 +8,6 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
-
 import sign_checker as sc
 
 
@@ -213,12 +212,16 @@ class demo1(Frame):
         self.cheese_img=PhotoImage(file=cheese_img)
         self.cheese_sign_img=PhotoImage(file=cheese_sign_img)
         self.next_img = PhotoImage(file=next_img)
+        self.test_img = PhotoImage(file=testButton)
+
 
         # Resizing image to fit on button
         self.back_img = self.back_img.subsample(8, 8)
         self.next_img = self.next_img.subsample(8, 8)
         self.cheese_img = self.cheese_img.subsample(1,1)
         self.cheese_sign_img = self.cheese_sign_img.subsample(2,2)
+        self.test_img = self.test_img.subsample(4, 4)
+
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
         canvas.pack()
@@ -232,16 +235,16 @@ class demo1(Frame):
         self.pic_frame.place(relx=0.15, rely=0.15, relwidth=0.35, relheight=0.7)
         self.sign_frame = Frame(self, bg=WHITE)
         self.sign_frame.place(relx=0.5, rely=0.15, relwidth=0.35, relheight=0.7)
-        self.progress_frame = Frame(self, bg=BG_COLOUR)
-        self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
+        self.progress_frame = Frame(self, bg=WHITE)
+        self.progress_frame.place(relx=0.5, rely=0.8, relwidth=0.7, relheight=0.1, anchor='n')
 
         #buttons
         self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(StartPage))
         self.back.place(relx=0,rely=0)
         self.next = Button(self.menu, text="Next",bg= BLUE, image=self.next_img, border=0, command=lambda:controller.show_frame(demo2))
         self.next.place(relx=1,rely=0,anchor='ne')
-        #self.test = Button(self.progress_frame, text="Test")
-        #self.test.place(relx=0.5,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
+        self.test = Button(self.progress_frame, text="Test", bg=WHITE, image=self.test_img,border=0)
+        self.test.place(relx=0.5,rely=0,relwidth=0.3, relheight=0.5,anchor='n')
 
         #images
         self.imageLabel=Label(self.pic_frame,text="pic",image=self.cheese_img,border=0)
@@ -257,12 +260,16 @@ class demo2(Frame):
         self.next_img = PhotoImage(file=next_img)
         self.dog_img=PhotoImage(file=dog_img)
         self.dog_sign_img=PhotoImage(file=dog_sign_img)
+        self.test_img = PhotoImage(file=testButton)
+
 
         # Resizing image to fit on button
         self.back_img = self.back_img.subsample(8, 8)
         self.next_img = self.next_img.subsample(8, 8)
         self.dog_img = self.dog_img.subsample(1, 1)
         self.dog_sign_img = self.dog_sign_img.subsample(2, 2)
+        self.test_img = self.test_img.subsample(4, 4)
+
 
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
@@ -277,12 +284,14 @@ class demo2(Frame):
         self.pic_frame.place(relx=0.15, rely=0.15, relwidth=0.35, relheight=0.7)
         self.sign_frame = Frame(self, bg=WHITE)
         self.sign_frame.place(relx=0.5, rely=0.15, relwidth=0.35, relheight=0.7)
-        self.progress_frame = Frame(self, bg=BG_COLOUR)
-        self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
+        self.progress_frame = Frame(self, bg=WHITE)
+        self.progress_frame.place(relx=0.5, rely=0.8, relwidth=0.7, relheight=0.1, anchor='n')
 
         #buttons
         self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(demo1))
         self.back.place(relx=0,rely=0)
+        self.test = Button(self.progress_frame, text="Test", bg=WHITE, image=self.test_img,border=0)
+        self.test.place(relx=0.5,rely=0,relwidth=0.3, relheight=0.5,anchor='n')
         #self.test = Button(self.progress_frame, text="Test")
         #self.test.place(relx=0.5,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
 
@@ -291,8 +300,6 @@ class demo2(Frame):
         self.imageLabel.place(relx=0.5,rely=0.5,anchor='c')
         self.signLabel=Label(self.sign_frame,text="pic",image=self.dog_sign_img,border=0)
         self.signLabel.place(relx=0.5,rely=0.5,anchor='c')
-
-
 
 app = App()
 app.mainloop()
