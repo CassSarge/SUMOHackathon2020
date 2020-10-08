@@ -11,8 +11,6 @@ sys.path.insert(0,parentdir)
 
 import sign_checker as sc
 
-args = ['-m', 'vgg16', '-t', 'v', '-w', 'weights/snapshot_vgg_weights.hdf5']
-sc.main(args)
 
 from tkinter import *
 from settings import *
@@ -69,6 +67,11 @@ class App(Tk):
         frame= learn(self.container, self, key, teachingDic[key][0], teachingDic[key][1])
         frame.grid(row=0, column=0, sticky="nsew")
         frame.tkraise()
+
+    def open_sign_checker(self,letter):
+        args = ['-m', 'vgg16', '-t', letter, '-w', '../weights/snapshot_vgg_weights.hdf5']
+        sc.main(args)
+
 
 
 class StartPage(Frame):
@@ -192,7 +195,7 @@ class learn(Frame):
         #self.next.place(relx=0.9,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
         self.next = Button(self.menu, text="Next",bg= BLUE, image=self.next_img, border=0, command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
         self.next.place(relx=1,rely=0,anchor='ne')
-        self.test = Button(self.progress_frame, text="Test", bg=WHITE, image=self.test_img,border=0)
+        self.test = Button(self.progress_frame, text="Test", bg=WHITE, image=self.test_img,border=0, command=lambda: controller.open_sign_checker(self.teaching_item))
         self.test.place(relx=0.5,rely=0.1,relwidth=0.3, relheight=1,anchor='n')
 
 
