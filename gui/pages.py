@@ -4,6 +4,7 @@
 import os,sys,inspect
 import string
 
+#link the current directory to its parents directory
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
@@ -22,8 +23,9 @@ global pic_learn
 
 #os specific filepath separator (e.g. \ or /)
 s = os.sep
-#teaching dictionary
 
+#teaching dictionary
+#contains the images associated for each letter
 teachingDic={}
 for letter in list(string.ascii_uppercase):
     teachingDic[letter]= ["." + s + "img" + s + "text"+ s + "text_"+letter+".png","." + s + "img" + s + "signs"+ s +"sign_"+letter+".png"]
@@ -39,7 +41,7 @@ class App(Tk):
 
         self.resizable(width=False, height=False)
 
-
+        #populates a dictionary with the pages used for the gui
         self.frames = {}
 
         for F in (StartPage,learn,demo1,demo2):
@@ -55,11 +57,14 @@ class App(Tk):
 
         self.show_frame(StartPage)
 
+
+    #show the frame provided
     def show_frame(self, context):
 
         frame = self.frames[context]
         frame.tkraise()
 
+    #show the frame provided that is being used for teaching sign language
     def show_learn_frame(self, context,teachingItem):
 
         key=teachingItem
@@ -67,6 +72,7 @@ class App(Tk):
         frame.grid(row=0, column=0, sticky="nsew")
         frame.tkraise()
 
+    #call the sign checker program to detect 
     def open_sign_checker(self,letter):
         args = ['-m', 'vgg16', '-t', letter, '-w', '../weights/snapshot_vgg_weights.hdf5']
         sc.main(args)
