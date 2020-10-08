@@ -8,6 +8,7 @@ and classifies American Sign Language finger spelling frame-by-frame in real-tim
 """
 
 import string as string_module
+import sys
 import cv2
 import time
 from processing import square_pad, preprocess_for_vgg
@@ -103,6 +104,8 @@ def main(args):
     required_ap.add_argument("-m", "--model",
                             type=str, default="mobilenet", required=True,
                             help="name of pre-trained network to use")
+    ap.add_argument("-w", "--weights", default=None,
+                    help="path to the model weights")
     ap.add_argument("-t", "--target", default = "-", help = "Target letter for demo mode")
     arguments = vars(ap.parse_args(args))
 
@@ -131,7 +134,7 @@ def main(args):
         raise AssertionError("Model given must be one of: resnet, vgg16, inception, xceptino, mobilnet")
 
     # Create pre-trained model + classification block, with or without pre-trained weights
-    my_model = create_model(model=arguments["model"], model_weights_path=None)
+    my_model = create_model(model=arguments["model"], model_weights_path=arguments["weights"])
 
     # Dictionary to convert numerical classes to alphabet
     label_dict = {pos: letter
