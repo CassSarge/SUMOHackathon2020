@@ -97,22 +97,22 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
 
     
 
-def main():
+def main(args):
     ap = argparse.ArgumentParser()
     required_ap = ap.add_argument_group('required arguments')
     required_ap.add_argument("-m", "--model",
                             type=str, default="mobilenet", required=True,
                             help="name of pre-trained network to use")
     ap.add_argument("-t", "--target", default = "-", help = "Target letter for demo mode")
-    args = vars(ap.parse_args())
+    arguments = vars(ap.parse_args(args))
 
     mydict = {"TESTING": 1, "DEMO": 0}
 
-    if args['target'].upper() not in string_module.ascii_uppercase:
+    if arguments['target'].upper() not in string_module.ascii_uppercase:
         mode = mydict["TESTING"]
     else:
         mode = mydict["DEMO"]
-        targetLetter = args['target'].upper()
+        targetLetter = arguments['target'].upper()
 
 
 
@@ -122,7 +122,7 @@ def main():
     # Map model names to classes
     MODELS = ["resnet", "vgg16", "inception", "xception", "mobilenet"]
 
-    if args["model"] not in MODELS:
+    if arguments["model"] not in MODELS:
 
         string = ""
         for x in MODELS:
@@ -131,7 +131,7 @@ def main():
         raise AssertionError("Model given must be one of: resnet, vgg16, inception, xceptino, mobilnet")
 
     # Create pre-trained model + classification block, with or without pre-trained weights
-    my_model = create_model(model=args["model"], model_weights_path=None)
+    my_model = create_model(model=arguments["model"], model_weights_path=None)
 
     # Dictionary to convert numerical classes to alphabet
     label_dict = {pos: letter
@@ -210,4 +210,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
