@@ -69,6 +69,8 @@ class StartPage(Frame):
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg=BG_COLOUR)
         canvas.pack()
 
+        self.back=Frame(self, bg=BG_COLOUR)
+        self.back.place(relx=0.5, rely=0, relwidth=1, relheight=1, anchor='n')
         self.frame = Frame(self, bg=WHITE)
         self.frame.place(relx=0.5, rely=0.15, relwidth=0.8, relheight=0.8, anchor='n')
         self.header=Frame(self, bg=BLUE)
@@ -116,11 +118,11 @@ class Modules(Frame):
         #frames
         self.menu = Frame(self, bg=BG_COLOUR)
         self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
-        self.frame1 = Frame(self, bg=BG_COLOUR_2)
+        self.frame1 = Frame(self, bg=BG_COLOUR)
         self.frame1.place(relx=0.5, rely=0.1, relwidth=1, relheight=0.3, anchor='n')
         self.frame2 = Frame(self, bg=BG_COLOUR)
         self.frame2.place(relx=0.5, rely=0.4, relwidth=1, relheight=0.3, anchor='n')
-        self.frame3 = Frame(self, bg=BG_COLOUR_2)
+        self.frame3 = Frame(self, bg=BG_COLOUR)
         self.frame3.place(relx=0.5, rely=0.7, relwidth=1, relheight=0.3, anchor='n')
 
         #buttons
@@ -157,6 +159,8 @@ class learn(Frame):
         canvas.pack()
 
         #frames
+        self.back=Frame(self, bg=BG_COLOUR)
+        self.back.place(relx=0.5, rely=0, relwidth=1, relheight=1, anchor='n')
         self.menu = Frame(self, bg=BLUE)
         self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
         self.pic_frame = Frame(self, bg=WHITE)
