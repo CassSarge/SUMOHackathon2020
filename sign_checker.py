@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 LIVE DEMO
 This script loads a pre-trained model (for best results use pre-trained weights for classification block)
@@ -20,7 +17,7 @@ import numpy as np
 def testing_mode(my_predict, frame, width, height, label_dict):
     ''' Will display the top three predictions for the ASL symbol in the ROI'''
 
-    # Predict letter
+    # Find most confident match from NN
     top_prd = np.argmax(my_predict)
 
     # Only display predictions with probabilities greater than 0.5
@@ -39,6 +36,7 @@ def testing_mode(my_predict, frame, width, height, label_dict):
                     fontFace=cv2.FONT_HERSHEY_COMPLEX,
                     fontScale=14, color=(213,152,20),
                     thickness=15, lineType=cv2.LINE_AA)
+
         # Annotate image with second most probable prediction (displayed on bottom left)
         cv2.putText(frame, text=pred_2,
                     org=(width // 2 + width // 5, (360 + 240)),
@@ -59,6 +57,8 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
     ''' Will display the target letter and respond with a tick, 
     self closes when the target letter is detected for a time period'''
 
+    #  Puts the target letter in a large font on the camera feed to
+    #  aid clarity
     cv2.putText(frame, text=target,
                 org=(width // 2 + width // 5, height // 2),
                 fontFace=cv2.FONT_HERSHEY_DUPLEX,
@@ -79,10 +79,12 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
         #             thickness=6, lineType=cv2.LINE_AA)
 
 
+        #  Same process to get the most likely candidate alphabets
         preds_list = np.argsort(my_predict)[0]
         pred_2 = label_dict[preds_list[-2]]
         pred_3 = label_dict[preds_list[-3]]
 
+        # Console output for debug
         print(prediction_result, pred_2, pred_3)
 
         # Display success only if target is in top 3 prediction results
@@ -98,7 +100,13 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
 
     
 
+""" Main needs to take arguments here since it is called from the tKinter script
+    Since main will take command line arguments we cannot simply infer argv, it needs to
+    be passed explicitly
+"""
 def main(args):
+
+    #  Argument parsing code
     ap = argparse.ArgumentParser()
     required_ap = ap.add_argument_group('required arguments')
     required_ap.add_argument("-m", "--model",
@@ -109,6 +117,7 @@ def main(args):
     ap.add_argument("-t", "--target", default = "-", help = "Target letter for demo mode")
     arguments = vars(ap.parse_args(args))
 
+    #  Basic Enum for mode identification
     mydict = {"TESTING": 1, "DEMO": 0}
 
     if arguments['target'].upper() not in string_module.ascii_uppercase:
@@ -182,11 +191,14 @@ def main(args):
                                     verbose=0)
 
         if (mode):
+            #  Testing script - no target letter, just checking output 
             testing_mode(my_predict, frame, width, height, label_dict)
         else:
+            # Demo program, will give a target letter and show success on correct sign
             success = demo_mode(targetLetter, my_predict, frame, width, height, label_dict)
 
         # Count number of frames youve had the right answer for
+        # This is to remoe false positive readings / noise
         if success:
             consec_counter += 1
         else:
@@ -202,7 +214,7 @@ def main(args):
         if consec_counter >= 7 or (cv2.waitKey(10) & 0xFF == ord('q')):
             break
 
-    # Calculate frames per second
+    # Calculate frames per second by averaging the total frames shown over time 
     end = time.time()
     FPS = fps/(end-start)
     print("[INFO] approx. FPS: {:.2f}".format(FPS))
@@ -213,4 +225,5 @@ def main(args):
 
 
 if __name__ == "__main__":
+    #  Again, explicit sys.argv required since code will be called as a subprocess from another file 
     main(sys.argv[1:])
