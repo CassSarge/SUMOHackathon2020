@@ -1,12 +1,24 @@
 #Source: CJ van der Smissen
 #Source: https://github.com/introtocomputerscience/TKinterExample
+
+import os,sys,inspect
+import string
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
+
+
+import sign_checker as sc
+
+args = ['-m', 'vgg16', '-t', 'v', '-w', 'weights/snapshot_vgg_weights.hdf5']
+sc.main(args)
+
 from tkinter import *
 from settings import *
 from pics import *
 from random import randint
-import string
-import sys
-import os
+
 
 #flags
 global pic_learn
@@ -33,7 +45,7 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (StartPage, Modules, Profile,learn,demo1,demo2):
+        for F in (StartPage,learn,demo1,demo2):
             if F==learn:
                 for key in teachingDic:
                     frame = learn(self.container, self, key, teachingDic[key][0], teachingDic[key][1])
@@ -138,42 +150,7 @@ class StartPage(Frame):
 		page_two.pack()
 		'''
 
-class Modules(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
 
-        canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg=BG_COLOUR)
-        canvas.pack()
-
-        #frames
-        self.menu = Frame(self, bg=BG_COLOUR)
-        self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
-        self.frame1 = Frame(self, bg=BG_COLOUR)
-        self.frame1.place(relx=0.5, rely=0.1, relwidth=1, relheight=0.3, anchor='n')
-        self.frame2 = Frame(self, bg=BG_COLOUR)
-        self.frame2.place(relx=0.5, rely=0.4, relwidth=1, relheight=0.3, anchor='n')
-        self.frame3 = Frame(self, bg=BG_COLOUR)
-        self.frame3.place(relx=0.5, rely=0.7, relwidth=1, relheight=0.3, anchor='n')
-
-        #buttons
-        start_page = Button(self, text="Start Page", command=lambda:controller.show_frame(StartPage))
-        start_page.place(relx=0.1,rely=0.9,anchor='n')
-        profile = Button(self, text="Page Two", command=lambda:controller.show_frame(Profile))
-        profile.place(relx=0.9,rely=0.9,anchor='n')
-        module1 = Button(self.frame1, text="Module 1", command=lambda : controller.show_learn_frame(learn,'A',teachingDic['A'][0],teachingDic['A'][1]) )
-        module1.place(relx=0.2,rely=0.5,anchor='n')
-
-
-class Profile(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-
-        label = Label(self, text="Page Two")
-        label.pack(padx=10, pady=10)
-        start_page = Button(self, text="Start Page", command=lambda:controller.show_frame(StartPage))
-        start_page.pack()
-        page_one = Button(self, text="Page One", command=lambda:controller.show_frame(Modules))
-        page_one.pack()
 
 class learn(Frame):
     def __init__(self, parent, controller,teaching_item,image,sign_image):
@@ -183,12 +160,14 @@ class learn(Frame):
         self.sign_image = PhotoImage(file=sign_image)
         self.back_img=PhotoImage(file=back_img)
         self.next_img = PhotoImage(file=next_img)
+        self.test_img = PhotoImage(file=testButton)
 
         # Resizing image to fit on button
         self.image = self.image.subsample(3, 3)
         self.sign_image=self.sign_image.subsample(4,4)
         self.back_img = self.back_img.subsample(8, 8)
         self.next_img = self.next_img.subsample(8, 8)
+        self.test_img = self.test_img.subsample(4, 4)
 
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
@@ -203,8 +182,8 @@ class learn(Frame):
         self.pic_frame.place(relx=0.15, rely=0.15, relwidth=0.35, relheight=0.7)
         self.sign_frame = Frame(self, bg=WHITE)
         self.sign_frame.place(relx=0.5, rely=0.15, relwidth=0.35, relheight=0.7)
-        self.progress_frame = Frame(self, bg=BG_COLOUR)
-        self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
+        self.progress_frame = Frame(self, bg=WHITE)
+        self.progress_frame.place(relx=0.5, rely=0.7, relwidth=0.7, relheight=0.1, anchor='n')
 
         #buttons
         self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(StartPage))
@@ -213,8 +192,8 @@ class learn(Frame):
         #self.next.place(relx=0.9,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
         self.next = Button(self.menu, text="Next",bg= BLUE, image=self.next_img, border=0, command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
         self.next.place(relx=1,rely=0,anchor='ne')
-        self.test = Button(self.progress_frame, text="Test")
-        self.test.place(relx=0.5,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
+        self.test = Button(self.progress_frame, text="Test", bg=WHITE, image=self.test_img,border=0)
+        self.test.place(relx=0.5,rely=0.1,relwidth=0.3, relheight=1,anchor='n')
 
 
         #images
