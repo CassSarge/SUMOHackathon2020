@@ -13,3 +13,5 @@ GREEN="17B890"
 #photos
 pic_2_sign_img="./img/pic2sign.png"
 text_2_sign_img="./img/text2sign.png"
+logo_img="./img/logo_white.png"
+back_img="./img/back_white.png"
