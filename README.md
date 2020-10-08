@@ -1,6 +1,6 @@
 # SUMOHackathon2020
 
-Using OpenCV and NN to provide real time feedback on sign language education.
+Using OpenCV and NN to provide real time feedback for sign language education.
 
 SUMO Hackathon Project for team **Vault Dwellers**
 
