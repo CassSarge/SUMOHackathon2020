@@ -9,9 +9,11 @@ import os
 #flags
 global pic_learn
 
+#os specific filepath separator (e.g. \ or /)
+s = os.sep
 #teaching dictionary
 teachingDic={
-    "A": [".\img\letter_A.png",".\img\sign_A.png"]
+    "A": ["." + s + "img" + s + "letter_A.png","." + s + "img" + s + "sign_A.png"]
 }
 
 
@@ -109,8 +111,8 @@ class StartPage(Frame):
 
         drop2 = OptionMenu(self, variable, "one", "two", "three", )
         drop2.place(relx=0.9, rely=0.8, width=100, height=100, anchor='n')
-        
-        
+
+
 		label = Label(self, text="Start Page")
 		label.pack(padx=10, pady=10)
 		page_one = Button(self, text="Page One", command=lambda:controller.show_frame(PageOne))
