@@ -34,9 +34,9 @@ def testing_mode(my_predict, frame, width, height, label_dict):
 
         # Annotate image with most probable prediction
         cv2.putText(frame, text=prediction_result,
-                    org=(width // 2, height // 2),
+                    org=(width // 2 + width // 5, height // 2),
                     fontFace=cv2.FONT_HERSHEY_COMPLEX,
-                    fontScale=17, color=(213,152,20),
+                    fontScale=14, color=(213,152,20),
                     thickness=15, lineType=cv2.LINE_AA)
         # Annotate image with second most probable prediction (displayed on bottom left)
         cv2.putText(frame, text=pred_2,
@@ -59,10 +59,10 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
     self closes when the target letter is detected for a time period'''
 
     cv2.putText(frame, text=target,
-                org=(width // 2, height // 2),
-                fontFace=cv2.FONT_HERSHEY_COMPLEX,
-                fontScale=17, color=(213,152,20),
-                thickness=15, lineType=cv2.LINE_AA)
+                org=(width // 2 + width // 5, height // 2),
+                fontFace=cv2.FONT_HERSHEY_DUPLEX,
+                fontScale=14, color=(213,152,20),
+                thickness=19, lineType=cv2.LINE_AA)
 
         # Predict letter
     top_prd = np.argmax(my_predict)
@@ -71,25 +71,29 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
     # Confident we at least have a hand
     if np.max(my_predict) >= 0.50:
         # Annotate image in bottom left
-        cv2.putText(frame, text=prediction_result,
-                    org=(width // 2 + width // 5, (360 + 240)),
-                    fontFace=cv2.FONT_HERSHEY_DUPLEX,
-                    fontScale=6, color=(97, 140, 94),
-                    thickness=6, lineType=cv2.LINE_AA)
+        # cv2.putText(frame, text=prediction_result,
+        #             org=(width // 2 + width // 5, (360 + 240)),
+        #             fontFace=cv2.FONT_HERSHEY_DUPLEX,
+        #             fontScale=6, color=(97, 140, 94),
+        #             thickness=6, lineType=cv2.LINE_AA)
+
 
         preds_list = np.argsort(my_predict)[0]
         pred_2 = label_dict[preds_list[-2]]
         pred_3 = label_dict[preds_list[-3]]
 
+        print(prediction_result, pred_2, pred_3)
+
         # Display success only if target is in top 3 prediction results
-        if target in (prediction_result, pred_2, pred_3):
+        if target in (prediction_result, pred_2, pred_3) or success:
 
             # Annotate image with success message
             cv2.putText(frame, text="Success!!",
-                org=(width // 2 + width // 3 + 5, (360 + 240)),
+                org=(width // 2 + width // 7, (360 + 240)),
                 fontFace=cv2.FONT_HERSHEY_DUPLEX,
-                fontScale=6, color=(97, 140, 94),
+                fontScale=2, color=(97, 140, 94),
                 thickness=6, lineType=cv2.LINE_AA)
+            return True
 
     
 
@@ -146,10 +150,13 @@ def main():
     width = int(video_capture.get(3) + 0.5)
     height = int(video_capture.get(4) + 0.5)
 
-
+    consec_counter = 0
     while True:
         # Capture frame-by-frame
         _, frame = video_capture.read()
+
+        # For demo mode, assume that incorrect
+        success = False
 
         # add a frame to the fps counter
         fps += 1
@@ -174,13 +181,22 @@ def main():
         if (mode):
             testing_mode(my_predict, frame, width, height, label_dict)
         else:
-            demo_mode(targetLetter, my_predict, frame, width, height, label_dict)
+            success = demo_mode(targetLetter, my_predict, frame, width, height, label_dict)
+
+        # Count number of frames youve had the right answer for
+        if success:
+            consec_counter += 1
+        else:
+            consec_counter -= 1
+
+        if consec_counter <= 0:
+            consec_counter = 0
 
         # Display the resulting frame
         cv2.imshow('Video', frame)
 
         # Press 'q' to exit live loop
-        if cv2.waitKey(10) & 0xFF == ord('q'):
+        if consec_counter >= 7 or (cv2.waitKey(10) & 0xFF == ord('q')):
             break
 
     # Calculate frames per second
