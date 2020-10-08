@@ -85,7 +85,7 @@ def demo_mode(target, my_predict, frame, width, height, label_dict):
         print(prediction_result, pred_2, pred_3)
 
         # Display success only if target is in top 3 prediction results
-        if target in (prediction_result, pred_2, pred_3) or success:
+        if target in (prediction_result, pred_2, pred_3):
 
             # Annotate image with success message
             cv2.putText(frame, text="Success!!",
