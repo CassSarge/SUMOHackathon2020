@@ -69,6 +69,8 @@ class StartPage(Frame):
         self.logo = PhotoImage(file=logo_img)
         self.steve = PhotoImage(file=steve_img)
         self.logoText = PhotoImage(file=logo_text_img)
+        self.signButton = PhotoImage(file=signButton)
+        self.textButton = PhotoImage(file=textButton)
 
         # Resizing image to fit on button
         self.pic2sign = self.pic2sign.subsample(2, 2)
@@ -76,8 +78,8 @@ class StartPage(Frame):
         self.logo = self.logo.subsample(7, 7)
         self.steve = self.steve.subsample(3, 3)
         self.logoText= self.logoText.subsample(3, 3)
-
-
+        self.signButton = self.signButton.subsample(3, 3)
+        self.textButton= self.textButton.subsample(3, 3)
 
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg=BG_COLOUR)
@@ -104,6 +106,11 @@ class StartPage(Frame):
         logoLabel.place(relx=0.5,rely=0,anchor='n')
         steveLabel= Label(self.frame, text="steve", border=0, image= self.steve)
         steveLabel.place(relx=0.5,rely=0.4,anchor='n')
+        dropLabel= Label(self.frame, text="TANCOS", border=0, image= self.textButton)
+        dropLabel.place(relx=0.2,rely=0.75,anchor='n')
+        dropLabel= Label(self.frame, text="TANCOS", border=0, image= self.signButton)
+        dropLabel.place(relx=0.8,rely=0.75,anchor='n')
+
 
 
         #label = Label(self.frame, text="TANCOS", bg=BUTTON_COLOUR)
@@ -229,7 +236,7 @@ class demo1(Frame):
         self.back_img = self.back_img.subsample(8, 8)
         self.next_img = self.next_img.subsample(8, 8)
         self.cheese_img = self.cheese_img.subsample(1,1)
-        self.cheese_sign_img = self.cheese_sign_img.subsample(1,1)
+        self.cheese_sign_img = self.cheese_sign_img.subsample(2,2)
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
         canvas.pack()
@@ -273,7 +280,7 @@ class demo2(Frame):
         self.back_img = self.back_img.subsample(8, 8)
         self.next_img = self.next_img.subsample(8, 8)
         self.dog_img = self.dog_img.subsample(1, 1)
-        self.dog_sign_img = self.dog_sign_img.subsample(1, 1)
+        self.dog_sign_img = self.dog_sign_img.subsample(2, 2)
 
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
