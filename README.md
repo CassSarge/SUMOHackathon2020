@@ -33,12 +33,13 @@ This targeting mode is the intended mode for usage in the **Signed** gui.
 
 ## Demo Images
 
-Please insert images here using this syntax 
-
 ![First screen that opens on init](img/landingPage.PNG "Landing Page")
 
+Testing Mode Demonstration
 ![](img/testingmode.png "Testing Mode demo")
 
+
+Demo Mode Demonstration
 ![](img/demomode.png "Demo Mode demo")
 
 
