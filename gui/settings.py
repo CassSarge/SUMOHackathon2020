@@ -1,9 +1,15 @@
 # settings file
 
-HEIGHT = 600
-WIDTH = 300
+HEIGHT = 750
+WIDTH = 500
 
-BG_COLOUR = "#a2e0d8"
-BG_COLOUR_2 = "#ffffff"
+BG_COLOUR_2 = "#a2e0d8"
+BG_COLOUR = "#d7d7d7"
+WHITE = "#ffffff"
 BUTTON_COLOUR = "#C0C0C0"
 BLUE = "#1498d5"
+GREEN="17B890"
+
+#photos
+pic_2_sign_img="./img/pic2sign.png"
+text_2_sign_img="./img/text2sign.png"

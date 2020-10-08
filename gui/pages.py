@@ -3,9 +3,16 @@
 from tkinter import *
 from settings import *
 from pics import *
+import sys
+import os
 
 #flags
 global pic_learn
+
+#teaching dictionary
+teachingDic={
+    "A": [".\img\letter_A.png",".\img\sign_A.png"]
+}
 
 
 class App(Tk):
@@ -20,10 +27,16 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (StartPage, Modules, Profile,picture_learn_letter_A,picture_test_letter_A,text_learn_letter_A):
-            frame = F(container, self)
+        for F in (StartPage, Modules, Profile,learn):
+            if F==learn:
+                for key in teachingDic:
+                    frame = learn(container, self, key, teachingDic[key][0], teachingDic[key][1])
+            else:
+                frame = F(container, self)
+
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+
 
         self.show_frame(StartPage,False)
 
@@ -37,33 +50,42 @@ class App(Tk):
         frame = self.frames[context]
         frame.tkraise()
 
+    def show_learn_frame(self, context,teachingItem,img,sign_img):
+        frame = self.frames[context]
+        frame.tkraise()
+
 
 class StartPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
         # photo database
-        self.pencil = PhotoImage(file=".\img\photo1.png")
+        self.pic2sign = PhotoImage(file=pic_2_sign_img)
+        self.text2sign = PhotoImage(file=text_2_sign_img)
         # Resizing image to fit on button
-        self.pencil = self.pencil.subsample(3, 3)
+        self.pic2sign = self.pic2sign.subsample(2, 2)
+        self.text2sign = self.text2sign.subsample(2, 2)
 
-        canvas = Canvas(self, height=HEIGHT, width=WIDTH)
+        canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg=BG_COLOUR)
         canvas.pack()
 
-        self.frame = Frame(self, bg=BG_COLOUR)
-        self.frame.place(relx=0.5, rely=0, relwidth=1, relheight=1, anchor='n')
+        self.frame = Frame(self, bg=WHITE)
+        self.frame.place(relx=0.5, rely=0.15, relwidth=0.8, relheight=0.8, anchor='n')
+        self.header=Frame(self, bg=BLUE)
+        self.header.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
 
         # buttons
-        pic_learn_button = Button(self.frame, text="pic", bg="orange", fg="white", image=self.pencil, border=0,command=lambda:controller.show_frame(Modules,1))
-        pic_learn_button.place(relx=0.5, rely=0.3, relwidth=0.2, relheight=0.1, anchor='n')
+        pic_learn_button = Button(self.frame, text="pic",bg="white", fg="white", image=self.pic2sign, border=0,command=lambda:controller.show_frame(Modules,1))
+        pic_learn_button.place(relx=0.5, rely=0.15, width=200, height=200, anchor='n')
 
-        text_learn_button = Button(self.frame, text="ABC", bg="orange", fg="white",command=lambda:controller.show_frame(Modules,0))
-        text_learn_button.place(relx=0.5, rely=0.6, relwidth=0.2, relheight=0.1, anchor='n')
+        text_learn_button = Button(self.frame, text="ABC", bg="white", fg="white",image=self.text2sign,border=0,command=lambda:controller.show_frame(Modules,0))
+        text_learn_button.place(relx=0.5, rely=0.5, width=200, height=200, anchor='n')
 
-        label = Label(self.frame, text="TANCOS", bg=BUTTON_COLOUR)
-        label.place(relx=0.5, rely=0.1, relwidth=0.2, relheight=0.1, anchor='n')
+        #label = Label(self.frame, text="TANCOS", bg=BUTTON_COLOUR)
+        #label.place(relx=0.5, rely=0.1, relwidth=0.2, relheight=0.1, anchor='n')
 
         # drop down
+        '''
         variable = StringVar(self)
         variable.set("one")  # default value
 
@@ -74,8 +96,8 @@ class StartPage(Frame):
 
         drop2 = OptionMenu(self, variable, "one", "two", "three", )
         drop2.place(relx=0.9, rely=0.8, width=100, height=100, anchor='n')
-
-        '''
+        
+        
 		label = Label(self, text="Start Page")
 		label.pack(padx=10, pady=10)
 		page_one = Button(self, text="Page One", command=lambda:controller.show_frame(PageOne))
@@ -88,7 +110,7 @@ class Modules(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        canvas = Canvas(self, height=HEIGHT, width=WIDTH)
+        canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg=BG_COLOUR)
         canvas.pack()
 
         #frames
@@ -106,7 +128,7 @@ class Modules(Frame):
         start_page.place(relx=0.1,rely=0.9,anchor='n')
         profile = Button(self, text="Page Two", command=lambda:controller.show_frame(Profile,False))
         profile.place(relx=0.9,rely=0.9,anchor='n')
-        module1 = Button(self.frame1, text="Module 1", command=lambda : controller.show_frame(picture_learn_letter_A,2) if pic_learn==1 else controller.show_frame(text_learn_letter_A,2))
+        module1 = Button(self.frame1, text="Module 1", command=lambda : controller.show_learn_frame(learn,'A',teachingDic['A'][0],teachingDic['A'][1]) )
         module1.place(relx=0.2,rely=0.5,anchor='n')
 
 
@@ -121,6 +143,46 @@ class Profile(Frame):
         page_one = Button(self, text="Page One", command=lambda:controller.show_frame(Modules,2))
         page_one.pack()
 
+
+class learn(Frame):
+    def __init__(self, parent, controller,teaching_item,image,sign_image):
+        Frame.__init__(self, parent)
+        self.teaching_item=teaching_item
+        self.image=PhotoImage(file=image)
+        self.sign_image = PhotoImage(file=sign_image)
+        # Resizing image to fit on button
+        self.image = self.image.subsample(3, 3)
+
+        canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
+        canvas.pack()
+
+        #frames
+        self.menu = Frame(self, bg=BLUE)
+        self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
+        self.pic_frame = Frame(self, bg=WHITE)
+        self.pic_frame.place(relx=0.15, rely=0.1, relwidth=0.35, relheight=0.7)
+        self.sign_frame = Frame(self, bg=WHITE)
+        self.sign_frame.place(relx=0.5, rely=0.1, relwidth=0.35, relheight=0.7)
+        self.progress_frame = Frame(self, bg=BG_COLOUR)
+        self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
+
+        #buttons
+        self.back = Button(self.menu, text="Back", command=lambda:controller.show_frame(Modules,2))
+        self.back.place(relx=0,rely=0)
+        self.next = Button(self.progress_frame, text="Next", command=lambda:controller.show_frame(StartPage,2))
+        self.next.place(relx=0.9,rely=0.1,anchor='c')
+        #self.test = Button(self.progress_frame, text="Test", command=lambda:controller.show_frame(picture_test_letter_A,2))
+        #self.test.place(relx=0.5,rely=0.1,anchor='c')
+
+
+        #images
+        self.imageLabel=Label(self.pic_frame,text="pic",image=self.image)
+        self.imageLabel.pack()
+        self.signLabel=Label(self.sign_frame,text="pic",image=self.sign_image)
+        self.signLabel.pack()
+
+
+'''
 class picture_learn_letter_A(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -137,6 +199,8 @@ class picture_learn_letter_A(Frame):
         self.sign_frame.place(relx=0.5, rely=0.1, relwidth=0.35, relheight=0.7)
         self.progress_frame = Frame(self, bg=BG_COLOUR_2)
         self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
+
+
 
 
         #buttons
@@ -203,7 +267,7 @@ class picture_test_letter_A(Frame):
         self.next.place(relx=0.9,rely=0.1,anchor='c')
         self.learn = Button(self.progress_frame, text="Learn", command=lambda:controller.show_frame(picture_learn_letter_A,2))
         self.learn.place(relx=0.5,rely=0.1,anchor='c')
-
+'''
 
 
 
