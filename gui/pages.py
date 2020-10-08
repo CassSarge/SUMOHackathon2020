@@ -33,7 +33,7 @@ class App(Tk):
 
         self.frames = {}
 
-        for F in (StartPage, Modules, Profile,learn,demo):
+        for F in (StartPage, Modules, Profile,learn,demo1,demo2):
             if F==learn:
                 for key in teachingDic:
                     frame = learn(self.container, self, key, teachingDic[key][0], teachingDic[key][1])
@@ -68,12 +68,14 @@ class StartPage(Frame):
         self.text2sign = PhotoImage(file=text_2_sign_img)
         self.logo = PhotoImage(file=logo_img)
         self.steve = PhotoImage(file=steve_img)
+        self.logoText = PhotoImage(file=logo_text_img)
 
         # Resizing image to fit on button
         self.pic2sign = self.pic2sign.subsample(2, 2)
         self.text2sign = self.text2sign.subsample(2, 2)
         self.logo = self.logo.subsample(7, 7)
         self.steve = self.steve.subsample(3, 3)
+        self.logoText= self.logoText.subsample(3, 3)
 
 
 
@@ -89,17 +91,19 @@ class StartPage(Frame):
         self.header.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
 
         # buttons
-        pic_learn_button = Button(self.frame, text="pic",bg="white", fg="white", image=self.pic2sign, border=0,command=lambda:controller.show_frame(demo))
-        pic_learn_button.place(relx=0, rely=0.15, width=200, height=200, anchor='nw')
+        pic_learn_button = Button(self.frame, text="pic",bg="white", fg="white", image=self.pic2sign, border=0,command=lambda:controller.show_frame(demo1))
+        pic_learn_button.place(relx=0.05, rely=0.2, width=200, height=200, anchor='nw')
 
         text_learn_button = Button(self.frame, text="ABC", bg="white", fg="white",image=self.text2sign,border=0,command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
-        text_learn_button.place(relx=1, rely=0.15, width=200, height=200, anchor='ne')
+        text_learn_button.place(relx=0.95, rely=0.2, width=200, height=200, anchor='ne')
 
         #images
         logoLabel= Label(self.header, text="TANCOS", border=0, image= self.logo)
         logoLabel.place(x=0,y=0)
+        logoLabel= Label(self.header, text="TANCOS", border=0, image= self.logoText)
+        logoLabel.place(relx=0.5,rely=0,anchor='n')
         steveLabel= Label(self.frame, text="steve", border=0, image= self.steve)
-        steveLabel.place(relx=0.5,rely=0.5,anchor='n')
+        steveLabel.place(relx=0.5,rely=0.4,anchor='n')
 
 
         #label = Label(self.frame, text="TANCOS", bg=BUTTON_COLOUR)
@@ -171,11 +175,13 @@ class learn(Frame):
         self.image=PhotoImage(file=image)
         self.sign_image = PhotoImage(file=sign_image)
         self.back_img=PhotoImage(file=back_img)
+        self.next_img = PhotoImage(file=next_img)
 
         # Resizing image to fit on button
         self.image = self.image.subsample(3, 3)
         self.sign_image=self.sign_image.subsample(4,4)
         self.back_img = self.back_img.subsample(8, 8)
+        self.next_img = self.next_img.subsample(8, 8)
 
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
@@ -187,17 +193,19 @@ class learn(Frame):
         self.menu = Frame(self, bg=BLUE)
         self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
         self.pic_frame = Frame(self, bg=WHITE)
-        self.pic_frame.place(relx=0.15, rely=0.1, relwidth=0.35, relheight=0.7)
+        self.pic_frame.place(relx=0.15, rely=0.15, relwidth=0.35, relheight=0.7)
         self.sign_frame = Frame(self, bg=WHITE)
-        self.sign_frame.place(relx=0.5, rely=0.1, relwidth=0.35, relheight=0.7)
+        self.sign_frame.place(relx=0.5, rely=0.15, relwidth=0.35, relheight=0.7)
         self.progress_frame = Frame(self, bg=BG_COLOUR)
         self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
 
         #buttons
         self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(StartPage))
         self.back.place(relx=0,rely=0)
-        self.next = Button(self.progress_frame, text="Next", command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
-        self.next.place(relx=0.9,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
+        #self.next = Button(self.progress_frame, text="Next", command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
+        #self.next.place(relx=0.9,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
+        self.next = Button(self.menu, text="Next",bg= BLUE, image=self.next_img, border=0, command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
+        self.next.place(relx=1,rely=0,anchor='ne')
         self.test = Button(self.progress_frame, text="Test")
         self.test.place(relx=0.5,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
 
@@ -208,21 +216,63 @@ class learn(Frame):
         self.signLabel=Label(self.sign_frame,text="pic",image=self.sign_image,border=0)
         self.signLabel.place(relx=0.5,rely=0.5,anchor='c')
 
-class demo(Frame):
+class demo1(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
         self.back_img=PhotoImage(file=back_img)
         self.cheese_img=PhotoImage(file=cheese_img)
-        self.dog_img=PhotoImage(file=dog_img)
         self.cheese_sign_img=PhotoImage(file=cheese_sign_img)
+        self.next_img = PhotoImage(file=next_img)
+
+        # Resizing image to fit on button
+        self.back_img = self.back_img.subsample(8, 8)
+        self.next_img = self.next_img.subsample(8, 8)
+        self.cheese_img = self.cheese_img.subsample(1,1)
+        self.cheese_sign_img = self.cheese_sign_img.subsample(1,1)
+
+        canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
+        canvas.pack()
+
+        #frames
+        self.back=Frame(self, bg=BG_COLOUR)
+        self.back.place(relx=0.5, rely=0, relwidth=1, relheight=1, anchor='n')
+        self.menu = Frame(self, bg=BLUE)
+        self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
+        self.pic_frame = Frame(self, bg=WHITE)
+        self.pic_frame.place(relx=0.15, rely=0.15, relwidth=0.35, relheight=0.7)
+        self.sign_frame = Frame(self, bg=WHITE)
+        self.sign_frame.place(relx=0.5, rely=0.15, relwidth=0.35, relheight=0.7)
+        self.progress_frame = Frame(self, bg=BG_COLOUR)
+        self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
+
+        #buttons
+        self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(StartPage))
+        self.back.place(relx=0,rely=0)
+        self.next = Button(self.menu, text="Next",bg= BLUE, image=self.next_img, border=0, command=lambda:controller.show_frame(demo2))
+        self.next.place(relx=1,rely=0,anchor='ne')
+        #self.test = Button(self.progress_frame, text="Test")
+        #self.test.place(relx=0.5,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
+
+        #images
+        self.imageLabel=Label(self.pic_frame,text="pic",image=self.cheese_img,border=0)
+        self.imageLabel.place(relx=0.5,rely=0.5,anchor='c')
+        self.signLabel=Label(self.sign_frame,text="pic",image=self.cheese_sign_img,border=0)
+        self.signLabel.place(relx=0.5,rely=0.5,anchor='c')
+
+class demo2(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        self.back_img=PhotoImage(file=back_img)
+        self.next_img = PhotoImage(file=next_img)
+        self.dog_img=PhotoImage(file=dog_img)
         self.dog_sign_img=PhotoImage(file=dog_sign_img)
 
         # Resizing image to fit on button
         self.back_img = self.back_img.subsample(8, 8)
-        self.cheese_img = self.cheese_img.subsample(1,1)
+        self.next_img = self.next_img.subsample(8, 8)
         self.dog_img = self.dog_img.subsample(1, 1)
-        self.cheese_sign_img = self.cheese_sign_img.subsample(1,1)
         self.dog_sign_img = self.dog_sign_img.subsample(1, 1)
 
 
@@ -234,23 +284,25 @@ class demo(Frame):
         self.back.place(relx=0.5, rely=0, relwidth=1, relheight=1, anchor='n')
         self.menu = Frame(self, bg=BLUE)
         self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
-        self.demo_frame= Frame(self, bg=WHITE)
-        self.demo_frame.place(relx=0.5, rely=0.15, relwidth=0.8, relheight=0.8, anchor='n')
-
+        self.pic_frame = Frame(self, bg=WHITE)
+        self.pic_frame.place(relx=0.15, rely=0.15, relwidth=0.35, relheight=0.7)
+        self.sign_frame = Frame(self, bg=WHITE)
+        self.sign_frame.place(relx=0.5, rely=0.15, relwidth=0.35, relheight=0.7)
+        self.progress_frame = Frame(self, bg=BG_COLOUR)
+        self.progress_frame.place(relx=0.5, rely=0.9, relwidth=1, relheight=0.2, anchor='n')
 
         #buttons
-        self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(StartPage))
+        self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(demo1))
         self.back.place(relx=0,rely=0)
+        #self.test = Button(self.progress_frame, text="Test")
+        #self.test.place(relx=0.5,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
 
         #images
-        self.cheeseLabel=Label(self.demo_frame,text="pic",image=self.cheese_img,border=0)
-        self.cheeseLabel.place(relx=0.25,rely=0.3,anchor='c')
-        self.cheeseLabel=Label(self.demo_frame,text="pic",image=self.cheese_sign_img,border=0)
-        self.cheeseLabel.place(relx=0.75,rely=0.3,anchor='c')
-        self.dogLabel=Label(self.demo_frame,text="bag",image=self.dog_img,border=0)
-        self.dogLabel.place(relx=0.25,rely=0.6,anchor='c')
-        self.dogLabel=Label(self.demo_frame,text="bag",image=self.dog_sign_img,border=0)
-        self.dogLabel.place(relx=0.75,rely=0.6,anchor='c')
+        self.imageLabel=Label(self.pic_frame,text="pic",image=self.dog_img,border=0)
+        self.imageLabel.place(relx=0.5,rely=0.5,anchor='c')
+        self.signLabel=Label(self.sign_frame,text="pic",image=self.dog_sign_img,border=0)
+        self.signLabel.place(relx=0.5,rely=0.5,anchor='c')
+
 
 
 app = App()
