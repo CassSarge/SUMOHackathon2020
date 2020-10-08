@@ -4,13 +4,16 @@
 import os,sys,inspect
 import string
 
+#### UNCOMMENT THIS TO RUN THE MACHINE LEARNING PROGRAM
+
 #link the current directory to its parents directory
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
+#currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+#parentdir = os.path.dirname(currentdir)
+#sys.path.insert(0,parentdir)
 
-import sign_checker as sc
+#import sign_checker as sc
 
+#####
 
 from tkinter import *
 from settings import *
@@ -75,7 +78,7 @@ class App(Tk):
     #call the sign checker program to detect 
     def open_sign_checker(self,letter):
         args = ['-m', 'vgg16', '-t', letter, '-w', '../weights/snapshot_vgg_weights.hdf5']
-        sc.main(args)
+        #sc.main(args) # UCOMMENT THIS TO CALL SIGN_CHECKER.PY
 
 
 
@@ -200,6 +203,8 @@ class learn(Frame):
         #self.next.place(relx=0.9,rely=0,relwidth=0.2, relheight=0.3,anchor='n')
         self.next = Button(self.menu, text="Next",bg= BLUE, image=self.next_img, border=0, command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
         self.next.place(relx=1,rely=0,anchor='ne')
+
+
         self.test = Button(self.progress_frame, text="Test", bg=WHITE, image=self.test_img,border=0, command=lambda: controller.open_sign_checker(self.teaching_item))
         self.test.place(relx=0.5,rely=0.1,relwidth=0.3, relheight=1,anchor='n')
 
