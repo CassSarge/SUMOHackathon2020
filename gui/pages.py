@@ -67,10 +67,14 @@ class StartPage(Frame):
         self.pic2sign = PhotoImage(file=pic_2_sign_img)
         self.text2sign = PhotoImage(file=text_2_sign_img)
         self.logo = PhotoImage(file=logo_img)
+        self.steve = PhotoImage(file=steve_img)
+
         # Resizing image to fit on button
         self.pic2sign = self.pic2sign.subsample(2, 2)
         self.text2sign = self.text2sign.subsample(2, 2)
         self.logo = self.logo.subsample(7, 7)
+        self.steve = self.steve.subsample(3, 3)
+
 
 
 
@@ -86,14 +90,16 @@ class StartPage(Frame):
 
         # buttons
         pic_learn_button = Button(self.frame, text="pic",bg="white", fg="white", image=self.pic2sign, border=0,command=lambda:controller.show_frame(demo))
-        pic_learn_button.place(relx=0.5, rely=0.15, width=200, height=200, anchor='n')
+        pic_learn_button.place(relx=0, rely=0.15, width=200, height=200, anchor='nw')
 
         text_learn_button = Button(self.frame, text="ABC", bg="white", fg="white",image=self.text2sign,border=0,command=lambda:controller.show_learn_frame(learn,chr(randint(65,90))))
-        text_learn_button.place(relx=0.5, rely=0.5, width=200, height=200, anchor='n')
+        text_learn_button.place(relx=1, rely=0.15, width=200, height=200, anchor='ne')
 
         #images
         logoLabel= Label(self.header, text="TANCOS", border=0, image= self.logo)
         logoLabel.place(x=0,y=0)
+        steveLabel= Label(self.frame, text="steve", border=0, image= self.steve)
+        steveLabel.place(relx=0.5,rely=0.5,anchor='n')
 
 
         #label = Label(self.frame, text="TANCOS", bg=BUTTON_COLOUR)
