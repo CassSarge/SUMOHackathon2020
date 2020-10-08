@@ -205,10 +205,19 @@ class learn(Frame):
 class demo(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
+
         self.back_img=PhotoImage(file=back_img)
-        self.back_img = self.back_img.subsample(8, 8)
+        self.cheese_img=PhotoImage(file=cheese_img)
+        self.dog_img=PhotoImage(file=dog_img)
+        self.cheese_sign_img=PhotoImage(file=cheese_sign_img)
+        self.dog_sign_img=PhotoImage(file=dog_sign_img)
 
         # Resizing image to fit on button
+        self.back_img = self.back_img.subsample(8, 8)
+        self.cheese_img = self.cheese_img.subsample(1,1)
+        self.dog_img = self.dog_img.subsample(1, 1)
+        self.cheese_sign_img = self.cheese_sign_img.subsample(1,1)
+        self.dog_sign_img = self.dog_sign_img.subsample(1, 1)
 
 
         canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg= BG_COLOUR)
@@ -219,12 +228,23 @@ class demo(Frame):
         self.back.place(relx=0.5, rely=0, relwidth=1, relheight=1, anchor='n')
         self.menu = Frame(self, bg=BLUE)
         self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
+        self.demo_frame= Frame(self, bg=WHITE)
+        self.demo_frame.place(relx=0.5, rely=0.15, relwidth=0.8, relheight=0.8, anchor='n')
+
 
         #buttons
         self.back = Button(self.menu, text="Back", bg= BLUE, image=self.back_img, border=0, command=lambda:controller.show_frame(StartPage))
         self.back.place(relx=0,rely=0)
 
         #images
+        self.cheeseLabel=Label(self.demo_frame,text="pic",image=self.cheese_img,border=0)
+        self.cheeseLabel.place(relx=0.25,rely=0.3,anchor='c')
+        self.cheeseLabel=Label(self.demo_frame,text="pic",image=self.cheese_sign_img,border=0)
+        self.cheeseLabel.place(relx=0.75,rely=0.3,anchor='c')
+        self.dogLabel=Label(self.demo_frame,text="bag",image=self.dog_img,border=0)
+        self.dogLabel.place(relx=0.25,rely=0.6,anchor='c')
+        self.dogLabel=Label(self.demo_frame,text="bag",image=self.dog_sign_img,border=0)
+        self.dogLabel.place(relx=0.75,rely=0.6,anchor='c')
 
 
 app = App()
