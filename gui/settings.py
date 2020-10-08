@@ -25,4 +25,5 @@ steve_img="./img/Steve.png"
 logo_text_img="./img/logo_white_text.png"
 signButton="./img/signButton.png"
 textButton="./img/textButton.png"
+testButton="./img/testButton.png"
 

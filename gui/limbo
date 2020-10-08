@@ -287,6 +287,42 @@ class picture_test_letter_A(Frame):
         self.learn.place(relx=0.5,rely=0.1,anchor='c')
 '''
 
+class Modules(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        canvas = Canvas(self, height=HEIGHT, width=WIDTH, bg=BG_COLOUR)
+        canvas.pack()
+
+        #frames
+        self.menu = Frame(self, bg=BG_COLOUR)
+        self.menu.place(relx=0.5, rely=0, relwidth=1, relheight=0.1, anchor='n')
+        self.frame1 = Frame(self, bg=BG_COLOUR)
+        self.frame1.place(relx=0.5, rely=0.1, relwidth=1, relheight=0.3, anchor='n')
+        self.frame2 = Frame(self, bg=BG_COLOUR)
+        self.frame2.place(relx=0.5, rely=0.4, relwidth=1, relheight=0.3, anchor='n')
+        self.frame3 = Frame(self, bg=BG_COLOUR)
+        self.frame3.place(relx=0.5, rely=0.7, relwidth=1, relheight=0.3, anchor='n')
+
+        #buttons
+        start_page = Button(self, text="Start Page", command=lambda:controller.show_frame(StartPage))
+        start_page.place(relx=0.1,rely=0.9,anchor='n')
+        profile = Button(self, text="Page Two", command=lambda:controller.show_frame(Profile))
+        profile.place(relx=0.9,rely=0.9,anchor='n')
+        module1 = Button(self.frame1, text="Module 1", command=lambda : controller.show_learn_frame(learn,'A',teachingDic['A'][0],teachingDic['A'][1]) )
+        module1.place(relx=0.2,rely=0.5,anchor='n')
+
+
+class Profile(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+
+        label = Label(self, text="Page Two")
+        label.pack(padx=10, pady=10)
+        start_page = Button(self, text="Start Page", command=lambda:controller.show_frame(StartPage))
+        start_page.pack()
+        page_one = Button(self, text="Page One", command=lambda:controller.show_frame(Modules))
+        page_one.pack()
 
 
 
